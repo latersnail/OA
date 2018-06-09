@@ -1,0 +1,7 @@
+*.class
+*.doc
+*.pptx
+*.pdf
+*.zip
+*.iml
+.idea
