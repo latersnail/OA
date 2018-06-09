@@ -7,3 +7,4 @@ create a new branch for dev_fangjiang
 add content by dev_fangjiang
 add content by master
 我是一个小小的石头
+create new brach for quick and simple
