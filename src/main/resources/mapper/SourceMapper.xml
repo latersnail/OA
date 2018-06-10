@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snail.oa.mapper.SourceMapper" >
+
+  <insert id="insertSource" parameterType="source">
+      <selectKey keyProperty="id" resultType="String" order="BEFORE">
+          select  replace(uuid(),'-','')   from dual
+      </selectKey>
+     INSERT INTO source(id,name,sourceCode,sourcePath) VALUES (#{id},#{name},#{sourceCode},#{sourcePath})
+  </insert>
+
+   <update id="updateSource" parameterType="source">
+       UPDATE source
+       <set>
+           <if test="name!=null">
+              name = #{name}
+           </if>
+           <if test="sourceCode!=null">
+               ,sourceCode = #{sourceCode}
+           </if>
+           <if test="sourcePath!=null">
+               ,sourcePath = #{sourcePath}
+           </if>
+       </set>
+       WHERE id = #{id}
+   </update>
+
+    <select id="findSourceByPage" parameterType="java.util.Map" resultType="source">
+        SELECT * FROM source
+        <if test="name!=null">
+            WHERE name LIKE '%${name}%'
+        </if>
+    </select>
+
+    <select id="findSourceById" parameterType="java.lang.String">
+        SELECT * FROM source WHERE id = #{id}
+    </select>
+
+    <delete id="deleteSource" parameterType="java.util.List">
+        DELETE FROM source WHERE id IN (
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+</mapper>

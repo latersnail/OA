@@ -1,0 +1,33 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+.openWin-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.btn-close{
+    background-color: white;
+    color: black;
+}
+.btn-confirm{
+    color: black;
+}
+.openWin-title{
+    font-size: 18px;
+    font-weight: 700;
+    font-family: "微软雅黑";
+    background-color: #F7BDA7;
+}
+.openWin-input{
+    position: relative;
+    left: 20px;
+    top: 30px;
+}
+.operation{
+    position: relative;
+    top: 100px;
+    left: 30%;
+    padding: 10px;
+}

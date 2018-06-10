@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snail.oa.mapper.ActorMapper" >
+   <resultMap id="findActorByUserIdMap" type="Actor">
+       <id column="id" property="id" jdbcType="VARCHAR"/>
+       <result column="actorName" property="actorName" jdbcType="VARCHAR"/>
+       <association property="user" javaType="com.snail.oa.entity.User">
+           <id column="userId" property="id" jdbcType="VARCHAR"/>
+           <result column="userName" property="name" jdbcType="VARCHAR"/>
+       </association>
+   </resultMap>
+    <!--用于角色分页查询-->
+    <select id="findActorByPage" parameterType="java.util.Map" resultType="actor">
+        SELECT * from actor
+        <if test="actorName!=null">
+         WHERE  actorName LIKE '%${actorName}%'
+        </if>
+    </select>
+
+    <select id="findActorById" parameterType="java.lang.String" resultType="actor">
+        SELECT * FROM  actor where actor.id = #{id};
+    </select>
+
+    <!--插入一条数据-->
+    <insert id="insertActor" parameterType="actor">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select  replace(uuid(),'-','')   from dual
+        </selectKey>
+        INSERT INTO actor(id,actorName)
+        VALUES (#{id},#{actorName})
+    </insert>
+    <!--角色信息更改-->
+    <update id="updateActor" parameterType="actor">
+     update actor
+     <set>
+         <if test="actorName!=null">
+           actorName = #{actorName}
+         </if>
+     </set>
+        WHERE id = #{id}
+    </update>
+    <!--删除角色操作(整合单个和批量删除 都使用该statement语句)-->
+    <delete id="deleteActor" parameterType="java.util.List">
+        delete from actor WHERE actor.id in(
+          <foreach collection="list" item="id" separator=",">
+           #{id}
+          </foreach>
+        )
+    </delete>
+    <!--通过用户id获取角色信息-->
+    <select id="findActorByUserId" parameterType="java.lang.String" resultMap="findActorByUserIdMap">
+        SELECT actor.*,user.id userId,user.name userName
+        FROM user,actor
+        WHERE user.actorId = actor.id and user.id = #{userId}
+    </select>
+</mapper>

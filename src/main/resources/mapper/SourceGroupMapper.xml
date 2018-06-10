@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snail.oa.mapper.SourceGroupMapper" >
+
+  <resultMap id="base_result_map" type="SourceGroup">
+      <id column="sourceGroupId" jdbcType="VARCHAR" property="id"/>
+      <result column="sourceGroupName" jdbcType="VARCHAR" property="name"/>
+      <collection property="sourceList" ofType="com.snail.oa.entity.Source">
+          <id column="id" jdbcType="VARCHAR" property="id"/>
+          <result column="name" jdbcType="VARCHAR" property="name"/>
+          <result column="sourceCode" jdbcType="VARCHAR" property="sourceCode"/>
+          <result column="sourcePath" jdbcType="VARCHAR" property="sourcePath"/>
+      </collection>
+  </resultMap>
+
+  <insert id="insertSourceGroup" parameterType="sourceGroup">
+      <selectKey keyProperty="id" resultType="String" order="BEFORE">
+          select  replace(uuid(),'-','')   from dual
+      </selectKey>
+     INSERT INTO sourcegroup(id,name) VALUES (#{id},#{name})
+  </insert>
+
+   <update id="updateSourceGroup" parameterType="sourceGroup">
+       UPDATE sourcegroup
+       <set>
+           <if test="name!=null">
+              name = #{name}
+           </if>
+       </set>
+       WHERE id = #{id}
+   </update>
+
+    <select id="findSourceGroupByPage" parameterType="java.util.Map" resultType="sourceGroup">
+        SELECT * FROM sourcegroup
+        <if test="name!=null">
+            WHERE name LIKE '%${name}%'
+        </if>
+    </select>
+
+    <select id="findSourceGroupById" parameterType="java.lang.String" resultType="sourceGroup">
+        SELECT * FROM sourcegroup WHERE id = #{id}
+    </select>
+
+    <delete id="deleteSourceGroup" parameterType="java.util.List">
+        DELETE FROM sourceGroup WHERE id IN (
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <!--获取资源分组后的资源信息-->
+    <select id="findSourceByGroup"  resultMap="base_result_map">
+        SELECT source.*,sourcegroup.id sourceGroupId,sourcegroup.name sourceGroupName
+        FROM source,sourcegroup
+        WHERE sourcegroup.id = source.sourceCode
+    </select>
+
+</mapper>

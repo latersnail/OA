@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snail.oa.mapper.ProcessInfoMapper" >
+
+    <sql id="base_processInfo_list">
+       id,processName,formId,deploy,createTime,procdefId
+    </sql>
+
+  <insert id="insertProcessInfo" parameterType="processInfo">
+      <selectKey keyProperty="id" resultType="String" order="BEFORE">
+       select  replace(uuid(),'-','')   from dual
+     </selectKey>
+     INSERT INTO processInfo(id,processName,formId,deploy,createTime)
+      VALUES (#{id},#{processName},#{formId},#{deploy},#{createTime},#{procdefId})
+  </insert>
+
+    <select id="findProcessInfoList" parameterType="java.lang.String" resultType="processInfo">
+         SELECT  <include refid="base_processInfo_list"/> FROM processInfo
+        <if test="processName!=null">
+            WHERE processInfo.processName = #{processName}
+        </if>
+    </select>
+
+    <update id="updateProcessInfo" parameterType="processInfo">
+        UPDATE processInfo
+        <trim prefix="set" suffixOverrides=",">
+            <if test="processName!=null">
+                processName = #{processName},
+            </if>
+            <if test="formId!=null">
+                formId = #{formId},
+            </if>
+            <if test="deploy!=null">
+                deploy = #{deploy},
+            </if>
+            <if test="createTime!=null">
+                createTime = #{createTime},
+            </if>
+            <if test="procdefId!=null">
+                procdefId = #{procedefId}
+            </if>
+        </trim>
+
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteProcessInfo" parameterType="java.util.List">
+        DELETE FROM processInfo WHERE processInfo.id in(
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+</mapper>

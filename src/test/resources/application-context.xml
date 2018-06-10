@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--扫描指定路径下的注解并激活在xml中注册的和注解的bean-->
+    <context:component-scan base-package="com.snail.oa">
+        <!--不扫描控制层的注解,控制层由application-mvc.xml扫描-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan> 
+    <!--使用cglib代理的方式-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!--加载配置文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+</beans>

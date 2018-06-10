@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snail.oa.mapper.FormMapper" >
+
+  <insert id="insertForm" parameterType="form">
+      <selectKey keyProperty="id" resultType="String" order="BEFORE">
+          select  replace(uuid(),'-','')   from dual
+      </selectKey>
+      INSERT INTO form(id,formName,path,createTime) VALUES (#{id},#{formName},#{path},#{createTime})
+  </insert>
+
+    <update id="updateForm" parameterType="form">
+        UPDATE form
+        <trim prefix="set" suffixOverrides=",">
+            <if test="formName!=null">
+                formName = #{formName}
+            </if>
+            <if test="path!=null">
+                ,path = #{path}
+            </if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteForm" parameterType="java.util.List">
+        DELETE FROM form WHERE id in(
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <!--解决单参使用if语句时报错  _parameter-->
+    <select id="findFormByPage" parameterType="java.util.Map" resultType="form">
+        SELECT * from form
+        <if test="formName!=null">
+            where formName LIKE '%${formName}%'
+        </if>
+    </select>
+
+    <select id="findFormById" parameterType="java.lang.String" resultType="form">
+        SELECT * FROM form WHERE id = #{id}
+    </select>
+</mapper>

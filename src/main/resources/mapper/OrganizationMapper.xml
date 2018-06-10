@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snail.oa.mapper.OrganizationMapper" >
+    <resultMap id="find_org_map" type="organization">
+        <id column="orgId" jdbcType="VARCHAR" property="id"/>
+        <result column="orgName" jdbcType="VARCHAR" property="name"/>
+        <collection property="userList" ofType="com.snail.oa.entity.User">
+            <id column="userId" jdbcType="VARCHAR" property="id"/>
+            <result column="userName" jdbcType="VARCHAR" property="name"/>
+        </collection>
+    </resultMap>
+    <!--用于角色分页查询-->
+    <select id="findOrganizationByPage" parameterType="java.util.Map" resultType="organization">
+        SELECT * from organization
+        <if test="name!=null">
+         WHERE name like '%${name}%'
+        </if>
+    </select>
+
+    <select id="findOrganizationById" parameterType="java.lang.String" resultType="organization">
+        SELECT * FROM  organization where organization.id = #{id};
+    </select>
+
+    <!--插入一条数据-->
+    <insert id="insertOrganization" parameterType="organization">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select  replace(uuid(),'-','')   from dual
+        </selectKey>
+        INSERT INTO organization(id,name)
+        VALUES (#{id},#{name})
+    </insert>
+    <!--角色信息更改-->
+    <update id="updateOrganization" parameterType="organization">
+     update organization
+     <set>
+         <if test="name!=null">
+           name = #{name}
+         </if>
+     </set>
+        WHERE id = #{id}
+    </update>
+
+    <!--删除组织机构操作(整合单个和批量删除 都使用该statement语句)-->
+    <delete id="deleteOrganization" parameterType="java.util.List">
+        delete from organization WHERE organization.id in(
+          <foreach collection="list" item="id" separator=",">
+           #{id}
+          </foreach>
+        )
+    </delete>
+
+    <!--根据角色名称查找组织结构-->
+    <select id="findOrgByActorName" parameterType="java.lang.String" resultMap="find_org_map">
+        SELECT org.id orgId,org.name orgName,user.id userId,user.name userName from organization org,user,actor
+        where user.orgId = org.id and user.actorId = actor.id and actor.actorName=#{actorName};
+    </select>
+</mapper>

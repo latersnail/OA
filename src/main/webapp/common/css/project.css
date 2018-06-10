@@ -1,0 +1,16 @@
+﻿body {
+    background-color: #fff;
+    border: solid 10px #ffffff;
+    color: rgba(0, 0, 0, 0.99);
+    font-size: 12px;
+    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Noto Sans CJK SC,WenQuanYi Micro Hei,Arial,sans-serif;
+    margin: 0;
+    padding: 0;
+}
+a{
+	font-family:"宋体";
+    color:#0094ff;
+    text-decoration:underline;
+    text-decoration-line:none;
+}
+ 

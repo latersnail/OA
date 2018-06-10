@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snail.oa.mapper.FormProcessMapper" >
+
+    <insert id="insertFormProcess" parameterType="formProcess">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select  replace(uuid(),'-','')   from dual
+        </selectKey>
+        INSERT INTO formProcess(id,processId,formId) VALUES (#{id},#{processId},#{formId})
+    </insert>
+
+    <select id="findByProcessId" parameterType="java.lang.String" resultType="formProcess">
+        SELECT * FROM formProcess WHERE processId = #{processId}
+    </select>
+
+    <select id="findByFormId" parameterType="java.util.List" resultType="formProcess">
+         SELECT * FROM formProcess WHERE formId in (
+          <foreach collection="list" item="formId" separator=",">
+              #{formId}
+          </foreach>
+         )
+    </select>
+
+    <delete id="deleteByProcessId" parameterType="java.util.List">
+        DELETE FROM formProcess WHERE processId in(
+        <foreach collection="list" item="processId" separator=",">
+            #{processId}
+        </foreach>
+        )
+    </delete>
+
+    <!--当表单删除的时候,删除所有流程与该表单关联的数据  提示用户关联的流程有哪些-->
+    <delete id="deleteByFormId" parameterType="java.util.List">
+        DELETE FROM formProcess WHERE formId in (
+        <foreach collection="list" item="formId" separator=",">
+            #{formId}
+        </foreach>
+        )
+    </delete>
+
+    <!--更新表单信息-->
+    <update id="updateFormId" parameterType="formProcess">
+        UPDATE formProcess set formId = #{formId} WHERE processId = #{processId}
+    </update>
+</mapper>

@@ -1,0 +1,106 @@
+*{
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	outline: none;
+	border: none;
+	list-style: none;
+	font-weight: normal;
+	font-family: "微软雅黑";
+}
+html,body{
+	height: 100%;
+	overflow: hidden;
+}
+#dl_bg{
+	width: 100%;
+	height: 60%;
+	background-color: #89c82f;
+	background-image: url(../images/dl_bg.jpg);
+	background-repeat:  no-repeat;
+	background-position: center bottom;
+	background-size: 100% auto;
+}
+#dl_box{
+	width: 406px;
+	height: 366px;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin-top: -183px;
+	margin-left: -203px;
+	background: url(../images/dl_box.png) no-repeat;
+	overflow: hidden;
+}
+.dl_text{
+	width: 270px;
+	height: 40px;
+	border-bottom: #cccccc 2px solid;
+	margin: 0 auto;
+}
+.dl_text input{
+	width: 200px;
+	height: 40px;
+	line-height: 40px;
+	padding-left: 60px;
+	padding-right: 10px;
+}
+.dl_name{
+	margin-top: 84px;
+}
+.dl_name input{
+	background: url(../images/dl_name.png) no-repeat;
+	background-position: 10px center;
+}
+.dl_pass{
+	margin-top: 20px;
+}
+.dl_pass input{
+	background: url(../images/dl_pass.png) no-repeat;
+	background-position: 12px center;
+}
+.dl_yzm{
+	width: 270px;
+	height: 42px;
+	margin: 20px auto 40px auto;
+	overflow: hidden;
+}
+.dl_yzm input{
+	width: 100px;
+	height: 40px;
+	line-height: 40px;
+	padding: 0 10px;
+	border-bottom: #cccccc 2px solid;
+	float: left;
+}
+.dl_yzmbf{
+	width: 100px;
+	height: 40px;
+	float: right;
+	background-color: #cccccc;
+}
+.dl_sub input{
+	width: 270px;
+	height: 40px;
+	border-radius: 20px;
+	background-color: #89c82f;
+	color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
+}
+.dl_sub{
+	width: 270px;
+	height: 40px;
+	margin: 0 auto;
+}
+
+#dl_footer{
+	position: fixed;
+	bottom: 20px;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	font-size: 12px;
+	color: #ccc;
+}

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	   http://www.springframework.org/schema/cache
+	   http://www.springframework.org/schema/cache/spring-cache.xsd
+     ">
+       <!--扫描控制层的注解-->
+       <context:component-scan base-package="com.snail.oa.controller" />
+       <!--开启注解-->
+       <mvc:annotation-driven/>
+       <!--配置静态资源访问-->
+       <!--<mvc:resources mapping="/common/css/**" location="/common/css/"/>-->
+       <!--<mvc:resources mapping="/common/images/**" location="/common/images/"/>-->
+       <!--<mvc:resources mapping="/common/js/**" location="/common/js/"/>-->
+       <!--<mvc:resources mapping="/common/plugin/**" location="/common/plugin/"/>-->
+    <!-- fastjson配置-->
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json</value>
+                        <value>application/xml;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!--拦截器配置
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean id="projectInterceptor" class="">
+                <property name="excludeUrls">
+                    <list>
+                        <value>/login</value>
+                        <value>/authorityError</value>
+                        <value>/imageCode/showcode</value>
+                        <value>/imageCode/getCode</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    -->
+
+    <!-- 配置视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <!--文件上传-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600" />
+        <property name="maxInMemorySize" value="4096" />
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+    <!--&lt;!&ndash;控制层异常跳转&ndash;&gt;-->
+    <!--<bean id="handlerExceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">-->
+        <!--<property name="exceptionMappings">-->
+            <!--<props>-->
+                <!--<prop key="com.jxmstc.controller.impl.ControllerException">redirect:/authorityError</prop>-->
+            <!--</props>-->
+        <!--</property>-->
+    <!--</bean>-->
+</beans>

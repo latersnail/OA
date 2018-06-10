@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snail.oa.mapper.UserMapper" >
+<resultMap id="baseResultMap" type="user">
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="loginName" jdbcType="VARCHAR"  property="loginName"/>
+    <result column="password" jdbcType="VARCHAR" property="password"/>
+    <result column="sex" jdbcType="VARCHAR" property="sex"/>
+    <result column="telphone" jdbcType="VARCHAR" property="telphone"/>
+    <result column="status" jdbcType="VARCHAR" property="status"/>
+    <!--关联组织结构信息-->
+    <association property="organization" javaType="com.snail.oa.entity.Organization">
+        <id column="orgId" jdbcType="VARCHAR" property="id"/>
+        <result column="orgName" jdbcType="VARCHAR" property="name"/>
+    </association>
+    <!--关联角色信息-->
+    <collection property="actorList" ofType="com.snail.oa.entity.Actor">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="actorName" jdbcType="VARCHAR" property="actorName"/>
+    </collection>
+</resultMap>
+
+<!--查询用户非关联数据的sql代码片段-->
+<sql id="base_user_list">
+    user.id,user.name,user.loginName,user.password,user.sex,user.telphone,user.status
+</sql>
+    <!--用户登录-->
+ <select id="login" parameterType="java.lang.String" resultType="user">
+     select * from user where loginName=#{name} and password=#{password}
+ </select>
+    <!--用于用户分页查询-->
+    <select id="getUserList" parameterType="java.util.Map" resultType="user">
+        SELECT <include refid="base_user_list"/> ,actor.id actorId,actor.actorName,organization.id orgId,organization.name orgName
+        FROM user,actor,organization 
+        WHERE user.orgId = organization.id AND user.actorId = actor.id
+        <if test="loginName!=null">
+         AND user.name LIKE '%${loginName}%'
+        </if>
+    </select>
+    <!--插入一条数据-->
+    <insert id="insertUser" parameterType="user">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select  replace(uuid(),'-','')   from dual
+        </selectKey>
+        INSERT INTO user(id,name,loginName,password,sex,telphone,status,orgId,actorId)
+        VALUES (#{id},#{name},#{loginName},#{password},#{sex},#{telphone},#{status},#{orgId},#{actorId})
+    </insert>
+    <!--用户信息更改-->
+    <update id="updateUserInfo" parameterType="user">
+     update user
+     <trim prefix="set" suffixOverrides=",">
+         <if test="name!=null">
+             name = #{name},
+         </if>
+         <if test="loginName!=null">
+             loginName = #{loginName},
+         </if>
+         <if test="sex!=null">
+             sex = #{sex},
+         </if>
+         <if test="telphone!=null">
+             telphone = #{telphone},
+         </if>
+         <if test="status!=null">
+             status = #{status},
+         </if>
+         <if test="orgId!=null">
+             orgId = #{orgId},
+         </if>
+         <if test="actorId!=null">
+             actorId = #{actorId}
+         </if>
+     </trim>
+        WHERE id = #{id}
+    </update>
+    <!--删除用户操作(整合单个和批量删除 都使用该statement语句)-->
+    <delete id="deleteUser" parameterType="java.util.List">
+        delete from user WHERE id IN(
+          <foreach collection="list" item="id" separator=",">
+           #{id}
+          </foreach>
+        )
+    </delete>
+    <!--密码修改-->
+    <update id="updatePwd" parameterType="java.util.Map">
+        UPDATE user set password = #{password} where id=#{id}
+    </update>
+    <!--用户状态的更改-->
+    <update id="updateStatus" parameterType="java.util.Map">
+        UPDATE user set status = #{status} where id= #{id}
+    </update>
+    <!--根据用户ID获取用户信息-->
+    <select id="getUserInfoById" parameterType="java.lang.String" resultMap="baseResultMap">
+        SELECT <include refid="base_user_list"/> ,actor.id actorId,actor.actorName,organization.id orgId,organization.name orgName
+        FROM organization,user,actor
+        WHERE user.orgId = organization.id and user.actorId = actor.id and user.id = #{userId}
+    </select>
+    <!-- 根据角色名称查询用户信息 -->
+    <select id="findUserByActorName" parameterType="java.lang.String" resultType="user">
+        SELECT * from actor,user WHERE actor.id = user.actorId and actor.actorName = #{actorName}
+    </select>
+    <!--根据部门名称获取用户Id-->
+    <select id="findUserByOrgName" parameterType="java.lang.String" resultType="user">
+        SELECT user.* from user,organization WHERE organization.id = user.orgId and organization.name = #{orgName}
+    </select>
+</mapper>

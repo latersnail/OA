@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snail.oa.mapper.RecvDocMapper" >
+
+ <resultMap id="todo_task_map" type="recvDoc">
+   <id column="id" jdbcType="VARCHAR" property="id"/>
+   <result column="processName" jdbcType="VARCHAR" property="processName"/>
+   <result column="reason" jdbcType="VARCHAR" property="reason"/>
+   <result column="userId" jdbcType="VARCHAR" property="userId"/>
+   <result column="pid" jdbcType="VARCHAR" property="pid"/>
+   <result column="formId" jdbcType="VARCHAR" property="formId"/>
+   <result column="draft" jdbcType="VARCHAR" property="draft"/>
+   <result column="takeActor" jdbcType="VARCHAR" property="takeActor"/>
+   <result column="currentTime" jdbcType="TIMESTAMP" property="currentTime"/>
+   <result column="startTime" jdbcType="DATE" property="startTime"/>
+   <result column="endTime" jdbcType="DATE" property="endTime"/>
+   <result column="suggestion" jdbcType="VARCHAR" property="suggestion"/>
+   <result column="workflowName" jdbcType="VARCHAR" property="workflowName"/>
+   <result column="ID_" jdbcType="VARCHAR" property="taskId"/>
+     <result column="money" jdbcType="VARCHAR" property="money"/>
+     <result column="salary" jdbcType="VARCHAR" property="salary"/>
+     <result column="quarters" jdbcType="VARCHAR" property="quarters"/>
+     <association property="user" javaType="com.snail.oa.entity.User">
+        <id column="userId" jdbcType="VARCHAR" property="id"/>
+        <result column="userName" jdbcType="VARCHAR" property="name"/>
+       <association property="organization" javaType="com.snail.oa.entity.Organization">
+           <id column="orgId" jdbcType="VARCHAR" property="id"/>
+           <result column="orgName" jdbcType="VARCHAR" property="name"/>
+       </association>
+   </association>
+ </resultMap>
+
+    <resultMap id="base_result_map" type="recvDoc">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="processName" jdbcType="VARCHAR" property="processName"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="userId" jdbcType="VARCHAR" property="userId"/>
+        <result column="pid" jdbcType="VARCHAR" property="pid"/>
+        <result column="formId" jdbcType="VARCHAR" property="formId"/>
+        <result column="draft" jdbcType="VARCHAR" property="draft"/>
+        <result column="takeActor" jdbcType="VARCHAR" property="takeActor"/>
+        <result column="currentTime" jdbcType="TIMESTAMP" property="currentTime"/>
+        <result column="startTime" jdbcType="DATE" property="startTime"/>
+        <result column="endTime" jdbcType="DATE" property="endTime"/>
+        <result column="workflowName" jdbcType="VARCHAR" property="workflowName"/>
+        <result column="suggestion" jdbcType="VARCHAR" property="suggestion"/>
+        <result column="money" jdbcType="VARCHAR" property="money"/>
+        <result column="salary" jdbcType="VARCHAR" property="salary"/>
+        <result column="quarters" jdbcType="VARCHAR" property="quarters"/>
+        <association property="user" javaType="com.snail.oa.entity.User">
+            <id column="userId" jdbcType="VARCHAR" property="id"/>
+            <result column="userName" jdbcType="VARCHAR" property="name"/>
+            <association property="organization" javaType="com.snail.oa.entity.Organization">
+                <id column="orgId" jdbcType="VARCHAR" property="id"/>
+                <result column="orgName" jdbcType="VARCHAR" property="name"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <resultMap id="process_processed_map" type="recvDoc">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="processName" jdbcType="VARCHAR" property="processName"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="userId" jdbcType="VARCHAR" property="userId"/>
+        <result column="pid" jdbcType="VARCHAR" property="pid"/>
+        <result column="formId" jdbcType="VARCHAR" property="formId"/>
+        <result column="draft" jdbcType="VARCHAR" property="draft"/>
+        <result column="takeActor" jdbcType="VARCHAR" property="takeActor"/>
+        <result column="currentTime" jdbcType="TIMESTAMP" property="currentTime"/>
+        <result column="startTime" jdbcType="DATE" property="startTime"/>
+        <result column="endTime" jdbcType="DATE" property="endTime"/>
+        <result column="suggestion" jdbcType="VARCHAR" property="suggestion"/>
+        <result column="workflowName" jdbcType="VARCHAR" property="workflowName"/>
+        <result column="money" jdbcType="VARCHAR" property="money"/>
+        <result column="salary" jdbcType="VARCHAR" property="salary"/>
+        <result column="quarters" jdbcType="VARCHAR" property="quarters"/>
+        <association property="user" javaType="com.snail.oa.entity.User">
+            <id column="userId" jdbcType="VARCHAR" property="id"/>
+            <result column="userName" jdbcType="VARCHAR" property="name"/>
+            <association property="organization" javaType="com.snail.oa.entity.Organization">
+                <id column="orgId" jdbcType="VARCHAR" property="id"/>
+                <result column="orgName" jdbcType="VARCHAR" property="name"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <!--流程草稿-->
+    <resultMap id="process_draft_map" type="recvDoc">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="processName" jdbcType="VARCHAR" property="processName"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="userId" jdbcType="VARCHAR" property="userId"/>
+        <result column="pid" jdbcType="VARCHAR" property="pid"/>
+        <result column="draft" jdbcType="VARCHAR" property="draft"/>
+        <result column="takeActor" jdbcType="VARCHAR" property="takeActor"/>
+        <result column="currentTime" jdbcType="TIMESTAMP" property="currentTime"/>
+        <result column="startTime" jdbcType="DATE" property="startTime"/>
+        <result column="endTime" jdbcType="DATE" property="endTime"/>
+        <result column="suggestion" jdbcType="VARCHAR" property="suggestion"/>
+        <result column="workflowName" jdbcType="VARCHAR" property="workflowName"/>
+        <result column="money" jdbcType="VARCHAR" property="money"/>
+        <result column="salary" jdbcType="VARCHAR" property="salary"/>
+        <result column="quarters" jdbcType="VARCHAR" property="quarters"/>
+        <association property="user" javaType="com.snail.oa.entity.User">
+            <id column="userId" jdbcType="VARCHAR" property="id"/>
+            <result column="userName" jdbcType="VARCHAR" property="name"/>
+        </association>
+        <association property="form" javaType="com.snail.oa.entity.Form">
+            <id column="formId" jdbcType="VARCHAR" property="id"/>
+            <result column="formName" jdbcType="VARCHAR" property="formName"/>
+        </association>
+    </resultMap>
+   <!--表单数据详情-->
+    <resultMap id="process_info_map" type="recvDoc">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="processName" jdbcType="VARCHAR" property="processName"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="userId" jdbcType="VARCHAR" property="userId"/>
+        <result column="formId" jdbcType="VARCHAR" property="formId"/>
+        <result column="pid" jdbcType="VARCHAR" property="pid"/>
+        <result column="draft" jdbcType="VARCHAR" property="draft"/>
+        <result column="takeActor" jdbcType="VARCHAR" property="takeActor"/>
+        <result column="currentTime" jdbcType="TIMESTAMP" property="currentTime"/>
+        <result column="startTime" jdbcType="DATE" property="startTime"/>
+        <result column="endTime" jdbcType="DATE" property="endTime"/>
+        <result column="suggestion" jdbcType="VARCHAR" property="suggestion"/>
+        <result column="workflowName" jdbcType="VARCHAR" property="workflowName"/>
+        <result column="money" jdbcType="VARCHAR" property="money"/>
+        <result column="salary" jdbcType="VARCHAR" property="salary"/>
+        <result column="quarters" jdbcType="VARCHAR" property="quarters"/>
+        <association property="user" javaType="com.snail.oa.entity.User">
+            <id column="userId" jdbcType="VARCHAR" property="id"/>
+            <result column="userName" jdbcType="VARCHAR" property="name"/>
+        </association>
+    </resultMap>
+ <sql id="base_select_list">
+     id,processName,reason,userId,pid,draft,formId,startTime,endTime,suggestion,takeActor,currentTime,quarters,money,salary
+ </sql>
+
+    <!--   获取草稿文件
+     draft:   0  正常  1  草稿  2 回收站文件
+    -->
+    <select id="getDraftDoc" parameterType="java.lang.String" resultMap="process_draft_map">
+        SELECT recvdoc.*,user.id userId,user.name userName,form.id formId,form.formName
+        FROM  recvdoc,form,user
+        where userId = #{userId} and user.id = recvdoc.userId and form.id = recvdoc.formId and draft='1'
+    </select>
+
+    <select id="findAbandonDoc" parameterType="java.util.Map" resultMap="process_draft_map">
+          SELECT recvdoc.*,user.id userId,user.name userName,form.id formId,form.formName
+        FROM  recvdoc,form,user
+        where userId = #{userId} and user.id = recvdoc.userId and form.id = recvdoc.formId and draft='2'
+        <if test="processName!=null">
+            processName LIKE '%${processName}%'
+        </if>
+    </select>
+
+    <!--保存数据-->
+    <insert id="saveRecvDoc" parameterType="recvDoc">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select  replace(uuid(),'-','')   from dual
+        </selectKey>
+        INSERT INTO recvdoc(<include refid="base_select_list"/>) VALUES (#{id},#{processName},#{reason},
+        #{userId},#{pid},#{draft},#{formId},#{startTime},#{endTime},#{suggestion},#{takeActor},#{currentTime},#{quarters},#{money},#{salary})
+    </insert>
+
+    <!--更改数据-->
+    <update id="updateRecvDoc" parameterType="recvDoc">
+        UPDATE recvdoc
+        <trim prefix="set" suffixOverrides=",">
+            <if test="reason!=null">
+                reason = #{reason},
+            </if>
+            <if test="draft!=null">
+                draft = #{draft},
+            </if>
+            <if test="formId!=null">
+                formId = #{formId},
+            </if>
+            <if test="startTime!=null">
+                startTime = #{startTime},
+            </if>
+            <if test="endTime!=null">
+                endTime = #{endTime},
+            </if>
+            <if test="suggestion!=null">
+                suggestion = #{suggestion},
+            </if>
+
+            <if test="takeActor!=null">
+                takeActor = #{takeActor},
+            </if>
+
+            <if test="salary!=null">
+                salary = #{salary},
+            </if>
+
+            <if test="money!=null">
+                money = #{moeny},
+            </if>
+
+            <if test="quarters!=null">
+               quarters = #{quarters}
+            </if>
+
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <select id="getRecvDocById" parameterType="java.lang.String" resultMap="process_info_map">
+        SELECT recvDoc.*,user.name userName,user.id userId
+        FROM recvDoc,user
+        WHERE user.id = recvDoc.userId and recvDoc.id = #{id}
+    </select>
+    
+    <!--批量更改文件的状态-->
+    <select id="updateDocStatus" parameterType="java.util.Map">
+        UPDATE recvDoc SET recvDoc.draft = #{status} WHERE id in(${ids})
+    </select>
+
+    <!--根据当前处理人的ID获取待办任务  recvDoc和act_ru_task关联-->
+    <select id="findTodoTask" parameterType="java.util.Map" resultMap="todo_task_map">
+       SELECT recvdoc.*,user.name userName,user.id userId,organization.name orgName,organization.id orgId,art.NAME_ workflowName,art.ID_
+       from recvdoc,user,act_ru_task art,organization
+       WHERE art.PROC_INST_ID_ = recvdoc.pid and recvdoc.takeActor = user.id
+              and recvdoc.draft = '0' and organization.id = user.orgId and art.ASSIGNEE_= #{userId}
+       <if test="processName!=null">
+           and recvdoc.processName = #{processName}
+       </if>
+  </select>
+
+    <select id="findTaskByProcessInstanceId" parameterType="java.util.Map" resultMap="base_result_map">
+        SELECT recvdoc.*,user.name userName,user.id userId,organization.name orgName,organization.id orgId
+        from recvdoc,user,organization
+        WHERE recvdoc.takeActor = user.id and recvdoc.draft = '0'
+        and organization.id = user.orgId and recvdoc.pid in(${ids}) and recvdoc.takeActor = #{userId}
+</select>
+    <!--根据用户ID获取在办任务列表-->
+    <select id="findProcessTask" parameterType="java.util.Map" resultMap="base_result_map">
+        SELECT recvdoc.*,user.name userName,user.id userId,organization.name orgName,organization.id orgId,art.NAME_ workflowName
+        FROM recvdoc,user,organization,act_hi_procinst ahp,act_hi_taskinst aht,act_ru_task art
+        WHERE recvdoc.pid = ahp.PROC_INST_ID_ and recvdoc.pid = aht.PROC_INST_ID_
+              and user.id = aht.ASSIGNEE_ and organization.id = user.orgId and
+               user.id=#{userId} and ahp.END_TIME_ is NULL and recvdoc.pid = art.PROC_INST_ID_
+               <if test="processName!=null">
+                   and processName = #{processName}
+               </if>
+</select>
+    <!--根据用户ID获取已办任务列表-->
+    <select id="findProcessedTask" parameterType="java.util.Map" resultMap="base_result_map">
+      SELECT recvdoc.*,user.name userName,user.id userId,organization.name orgName,organization.id orgId,aht.NAME_ workflowName
+        FROM recvdoc,user,organization,act_hi_procinst ahp,act_hi_taskinst aht
+        WHERE recvdoc.pid = ahp.PROC_INST_ID_ and recvdoc.pid = aht.PROC_INST_ID_
+              and user.id = aht.ASSIGNEE_ and organization.id = user.orgId and
+               user.id=#{userId} and ahp.END_TIME_ is not NULL
+               <if test="processName">
+                   and processName = #{processName}
+               </if>
+    </select>
+
+    <!--永久删除回收站数据-->
+    <delete id="deleteRecvDoc" parameterType="java.util.List">
+        DELETE FROM recvdoc WHERE id IN (
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+</mapper>
